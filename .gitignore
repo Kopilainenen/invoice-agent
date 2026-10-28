@@ -1,0 +1,40 @@
+# JavaScript
+node_modules/
+dist/
+npm-debug.log*
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Runtime and user documents
+tmp/
+fixtures/incoming/*
+!fixtures/incoming/.gitkeep
+output/*
+!output/pdf/
+output/pdf/*
+!output/pdf/dea_test_invoice.pdf
+
+# OCR models
+.EasyOCR/
+models/
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+

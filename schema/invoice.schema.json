@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/schemas/invoice.schema.json",
+  "title": "Russian invoice for payment",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "source_file",
+    "document_type",
+    "supplier",
+    "buyer",
+    "invoice_number",
+    "invoice_date",
+    "currency",
+    "subtotal_amount",
+    "vat_amount",
+    "vat_rate",
+    "total_amount",
+    "payment_deadline",
+    "contract_number",
+    "items",
+    "confidence",
+    "warnings"
+  ],
+  "properties": {
+    "source_file": {
+      "type": "string",
+      "minLength": 1
+    },
+    "document_type": {
+      "const": "invoice_for_payment"
+    },
+    "supplier": {
+      "$ref": "#/$defs/party"
+    },
+    "buyer": {
+      "anyOf": [
+        { "$ref": "#/$defs/party" },
+        { "type": "null" }
+      ]
+    },
+    "invoice_number": {
+      "type": ["string", "null"]
+    },
+    "invoice_date": {
+      "type": ["string", "null"],
+      "format": "date"
+    },
+    "currency": {
+      "type": ["string", "null"],
+      "enum": ["RUB", "USD", "EUR", null]
+    },
+    "subtotal_amount": {
+      "type": ["number", "null"],
+      "minimum": 0
+    },
+    "vat_amount": {
+      "type": ["number", "null"],
+      "minimum": 0
+    },
+    "vat_rate": {
+      "type": ["number", "null"],
+      "minimum": 0,
+      "maximum": 100
+    },
+    "total_amount": {
+      "type": ["number", "null"],
+      "minimum": 0
+    },
+    "payment_deadline": {
+      "type": ["string", "null"],
+      "format": "date"
+    },
+    "contract_number": {
+      "type": ["string", "null"]
+    },
+    "items": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/line_item" }
+    },
+    "confidence": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 1
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "$defs": {
+    "line_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["line_number", "name", "unit", "quantity", "unit_price", "line_total"],
+      "properties": {
+        "line_number": { "type": "integer", "minimum": 1 },
+        "name": { "type": "string", "minLength": 1 },
+        "unit": { "type": ["string", "null"] },
+        "quantity": { "type": ["number", "null"], "minimum": 0 },
+        "unit_price": { "type": ["number", "null"], "minimum": 0 },
+        "line_total": { "type": ["number", "null"], "minimum": 0 }
+      }
+    },
+    "party": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "inn", "kpp", "bank_account", "bank_name", "bik"],
+      "properties": {
+        "name": { "type": ["string", "null"] },
+        "inn": { "type": ["string", "null"], "pattern": "^[0-9]{10}([0-9]{2})?$" },
+        "kpp": { "type": ["string", "null"], "pattern": "^[0-9]{9}$" },
+        "bank_account": { "type": ["string", "null"], "pattern": "^[0-9]{20}$" },
+        "bank_name": { "type": ["string", "null"] },
+        "bik": { "type": ["string", "null"], "pattern": "^[0-9]{9}$" }
+      }
+    }
+  }
+}
+

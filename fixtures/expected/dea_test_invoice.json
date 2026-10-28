@@ -1,0 +1,84 @@
+{
+  "source_file": "dea_test_invoice.pdf",
+  "document_type": "invoice_for_payment",
+  "supplier": {
+    "name": "ООО «Д.Е.А. ФИТНЕС САПЛАЙ»",
+    "inn": "7712345678",
+    "kpp": "771201001",
+    "bank_account": "40702810000000000001",
+    "bank_name": "АО «ТЕСТ БАНК»",
+    "bik": "044500000"
+  },
+  "buyer": {
+    "name": "ООО «ОЛИМП-ФИТНЕС»",
+    "inn": "7812345670",
+    "kpp": "781201001",
+    "bank_account": null,
+    "bank_name": null,
+    "bik": null
+  },
+  "invoice_number": "DEA-1042",
+  "invoice_date": "2026-10-23",
+  "currency": "RUB",
+  "subtotal_amount": 2000400.0,
+  "vat_amount": 400080.0,
+  "vat_rate": 20.0,
+  "total_amount": 2400480.0,
+  "payment_deadline": "2026-10-30",
+  "contract_number": "OF-6/2026",
+  "items": [
+    {
+      "line_number": 1,
+      "name": "Беговая дорожка D.E.A. RUN T4",
+      "unit": "шт.",
+      "quantity": 6.0,
+      "unit_price": 118000.0,
+      "line_total": 708000.0
+    },
+    {
+      "line_number": 2,
+      "name": "Эллиптический тренажёр D.E.A. E8",
+      "unit": "шт.",
+      "quantity": 6.0,
+      "unit_price": 84500.0,
+      "line_total": 507000.0
+    },
+    {
+      "line_number": 3,
+      "name": "Комплект регулируемых гантелей 2-24 кг",
+      "unit": "компл.",
+      "quantity": 12.0,
+      "unit_price": 26750.0,
+      "line_total": 321000.0
+    },
+    {
+      "line_number": 4,
+      "name": "Коврик тренировочный PRO 8 мм",
+      "unit": "шт.",
+      "quantity": 60.0,
+      "unit_price": 2850.0,
+      "line_total": 171000.0
+    },
+    {
+      "line_number": 5,
+      "name": "Стойка для хранения инвентаря",
+      "unit": "шт.",
+      "quantity": 6.0,
+      "unit_price": 32900.0,
+      "line_total": 197400.0
+    },
+    {
+      "line_number": 6,
+      "name": "Доставка по 6 адресам магазинов",
+      "unit": "усл.",
+      "quantity": 1.0,
+      "unit_price": 96000.0,
+      "line_total": 96000.0
+    }
+  ],
+  "confidence": {},
+  "warnings": [
+    "Документ содержит синтетические реквизиты и предназначен только для тестирования"
+  ]
+}
+

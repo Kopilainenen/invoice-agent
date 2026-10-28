@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Invoice Agent</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Локальный прототип</p>
+        <h1>Invoice Agent</h1>
+        <p class="subtitle">Счета на оплату → проверяемый реестр</p>
+      </div>
+      <div class="privacy">Файлы обрабатываются локально</div>
+    </header>
+
+    <main>
+      <section class="upload-panel" aria-labelledby="upload-title">
+        <div>
+          <p class="step">Шаг 1</p>
+          <h2 id="upload-title">Добавьте счета</h2>
+          <p>
+            Поддерживаются текстовые и сканированные PDF, а также фотографии JPG и PNG.
+            OCR выполняется локально; результат обязательно нужно проверить.
+          </p>
+        </div>
+
+        <label class="drop-zone" id="drop-zone" for="file-input">
+          <input id="file-input" type="file" accept="application/pdf,image/jpeg,image/png,.pdf,.jpg,.jpeg,.png" multiple />
+          <span class="drop-icon">PDF / IMG</span>
+          <strong>Перетащите счета</strong>
+          <span>или нажмите для выбора</span>
+        </label>
+
+        <div class="upload-actions">
+          <p id="selection-status">Файлы не выбраны</p>
+          <button id="extract-button" class="primary" type="button" disabled>
+            Извлечь данные
+          </button>
+        </div>
+        <div id="error-box" class="error-box" role="alert" hidden></div>
+      </section>
+
+      <section id="workspace" class="workspace" hidden>
+        <div class="workspace-header">
+          <div>
+            <p class="step">Шаг 2</p>
+            <h2>Проверьте результат</h2>
+            <p>Изменения попадут в итоговый реестр.</p>
+          </div>
+          <div class="record-navigation">
+            <button id="previous-record" type="button" class="secondary">Назад</button>
+            <span id="record-counter"></span>
+            <button id="next-record" type="button" class="secondary">Далее</button>
+          </div>
+        </div>
+
+        <div class="review-grid">
+          <article class="document-card">
+            <div class="card-heading">
+              <div>
+                <p class="label">Исходный документ</p>
+                <h3 id="document-name"></h3>
+              </div>
+            </div>
+            <iframe id="pdf-preview" title="Просмотр PDF"></iframe>
+          </article>
+
+          <article class="form-card">
+            <div class="card-heading">
+              <div>
+                <p class="label">Извлечённые данные</p>
+                <h3>Карточка счёта</h3>
+              </div>
+              <span id="status-badge" class="status-badge">Требуется проверка</span>
+            </div>
+
+            <div id="warnings" class="warnings" hidden></div>
+            <div id="validation-summary" class="validation-summary" hidden></div>
+
+            <form id="invoice-form">
+              <fieldset>
+                <legend>Документ</legend>
+                <div class="fields two-columns">
+                  <label>Номер счёта<input name="invoice_number" /></label>
+                  <label>Дата счёта<input name="invoice_date" type="date" /></label>
+                  <label>Номер договора<input name="contract_number" /></label>
+                  <label>Срок оплаты<input name="payment_deadline" type="date" /></label>
+                </div>
+              </fieldset>
+
+              <fieldset>
+                <legend>Поставщик</legend>
+                <div class="fields two-columns">
+                  <label class="wide">Название<input name="supplier.name" /></label>
+                  <label>ИНН<input name="supplier.inn" inputmode="numeric" /></label>
+                  <label>КПП<input name="supplier.kpp" inputmode="numeric" /></label>
+                  <label class="wide">Банк<input name="supplier.bank_name" /></label>
+                  <label>БИК<input name="supplier.bik" inputmode="numeric" /></label>
+                  <label>Расчётный счёт<input name="supplier.bank_account" inputmode="numeric" /></label>
+                </div>
+              </fieldset>
+
+              <fieldset>
+                <legend>Покупатель</legend>
+                <div class="fields two-columns">
+                  <label class="wide">Название<input name="buyer.name" /></label>
+                  <label>ИНН<input name="buyer.inn" inputmode="numeric" /></label>
+                  <label>КПП<input name="buyer.kpp" inputmode="numeric" /></label>
+                </div>
+              </fieldset>
+
+              <fieldset>
+                <legend>Суммы</legend>
+                <div class="fields two-columns">
+                  <label>Без НДС<input name="subtotal_amount" type="number" step="0.01" /></label>
+                  <label>Ставка НДС, %<input name="vat_rate" type="number" step="0.01" /></label>
+                  <label>Сумма НДС<input name="vat_amount" type="number" step="0.01" /></label>
+                  <label>Всего к оплате<input name="total_amount" type="number" step="0.01" /></label>
+                </div>
+              </fieldset>
+
+              <fieldset>
+                <div class="items-heading">
+                  <legend>Товарные позиции</legend>
+                  <button id="add-item" class="secondary compact" type="button">Добавить позицию</button>
+                </div>
+                <div class="items-table-wrap">
+                  <table class="items-table">
+                    <thead>
+                      <tr>
+                        <th>№</th>
+                        <th>Наименование</th>
+                        <th>Ед.</th>
+                        <th>Кол-во</th>
+                        <th>Цена</th>
+                        <th>Сумма</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody id="items-body"></tbody>
+                  </table>
+                </div>
+              </fieldset>
+
+              <label class="confirmed">
+                <input id="confirmed" type="checkbox" />
+                Данные проверены по исходному документу
+              </label>
+            </form>
+          </article>
+        </div>
+
+        <div class="export-bar">
+          <div>
+            <p class="step">Шаг 3</p>
+            <strong>Скачайте проверенный реестр</strong>
+          </div>
+          <div class="export-actions">
+            <button id="export-csv" class="secondary" type="button">Скачать CSV</button>
+            <button id="export-xlsx" class="primary" type="button">Скачать XLSX</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      Прототип обрабатывает только текстовые PDF. Перед финансовыми действиями
+      результат должен проверить человек.
+    </footer>
+
+    <script src="/app.js" defer></script>
+  </body>
+</html>
+
